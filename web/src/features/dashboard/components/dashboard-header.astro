@@ -1,0 +1,16 @@
+---
+import Badge from "@/features/ui-components/badge.astro";
+
+let connectionStatus: boolean = true; 
+---
+
+<header class=" flex justify-between items-center px-1 py-2 bg-background border border-border  drop-shadow-sm ">
+    <div class=" flex items-center ">
+        <img src="/water-drop.png" alt="" class=" size-10 ">
+        <h1 class=" text-lg font-extrabold ">Nível da caixa</h1>
+    </div>
+    <Badge variant={connectionStatus ? "green" : "red"}>
+        <div class={`size-1 ${connectionStatus ? "bg-success" : "bg-destructive"} mr-0.5`}></div>
+        <span>{connectionStatus ? "Conectado" : "Desconectado"}</span>
+    </Badge>
+</header>

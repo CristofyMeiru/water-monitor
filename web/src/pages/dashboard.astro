@@ -1,10 +1,12 @@
 ---
+import DashboardHeader from "@/features/dashboard/components/dashboard-header.astro";
 import WaterLevel from "@/features/dashboard/components/water-level.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 
 ---
 
 <BaseLayout>
+    <DashboardHeader/>
     <div class="flex justify-center items-center">
         <WaterLevel/>
     </div>
