@@ -2,12 +2,16 @@
 import DashboardHeader from "@/features/dashboard/components/dashboard-header.astro";
 import WaterLevel from "@/features/dashboard/components/water-level.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
+import WaterLevelLabel from "@/features/dashboard/components/water-level-label.astro";
+
+let percentage: number = 20;
 
 ---
 
 <BaseLayout>
     <DashboardHeader/>
-    <div class="flex justify-center items-center">
-        <WaterLevel/>
+    <div class="flex flex-col justify-center items-center">
+        <WaterLevel waterLevel={percentage} />
+        <WaterLevelLabel waterLevel={percentage} />
     </div>
 </BaseLayout>

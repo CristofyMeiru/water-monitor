@@ -1,3 +1,11 @@
+---
+ interface Props {
+  waterLevel: number;
+ }
+
+ const { waterLevel } = Astro.props;
+---
+
 <style>
   .water-container {
     position: relative;
@@ -59,7 +67,7 @@
   }
 </style>
 
-<div class="water-container">
+<div class="water-container" data-water-level={waterLevel} >
   <svg viewBox="0 0 200 200">
     <defs>
       <clipPath id="circle-clip">
@@ -73,7 +81,8 @@
         x2="0"
         y2="0"
       >
-        <stop offset="0%" stop-color="var(--primary)" />
+        <stop offset="0%" stop-color="#070180" />
+        <stop offset="30%" stop-color="var(--primary)" />
         <stop offset="65%" stop-color="#3b82f6" />
         <stop offset="100%" stop-color="#87a8f5" />
       </linearGradient>
@@ -117,9 +126,16 @@
 </div>
 
 <script>
-  const waterFill =
-    document.querySelector<SVGRectElement>("#water-fill")!;
+  const containers = document.querySelectorAll<HTMLElement>(
+  ".water-container"
+);
 
+containers.forEach((container) => {
+  const waterLevel = Number(container.dataset.waterLevel);
+
+  const waterFill = container.querySelector<SVGRectElement>("#water-fill")!;
+
+  
   const percentageDark =
     document.querySelector<HTMLElement>("#percentage-dark")!;
 
@@ -164,5 +180,7 @@
       `inset(0 0 ${100 - waterPosition}% 0)`;
   }
 
-  updateWaterLevel(100);
+  updateWaterLevel(waterLevel);
+});
+  
 </script>

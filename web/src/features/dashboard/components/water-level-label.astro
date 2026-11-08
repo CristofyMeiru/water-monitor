@@ -1,0 +1,59 @@
+---
+import Badge from "@/features/ui-components/badge.astro";
+import IconCheckCircle from "@/assets/circle-check.svg";
+import IconAlertTriangle from "@/assets/alert-triangle.svg";
+import IconXCircle from "@/assets/circle-x.svg";
+import { type BadgeVariant } from "@/features/ui-components/badge.astro";
+
+interface Props {
+    waterLevel: number;
+}
+
+interface Variant {
+    label: string;
+    variant: BadgeVariant;
+    icon: any;
+}
+
+type LevelStatus = "maximum" | "medium" | "low" | "empty";
+
+const { waterLevel } = Astro.props;
+
+const status: LevelStatus =
+    waterLevel >= 90 ? "maximum" :
+    waterLevel >= 40 ? "medium" :
+    waterLevel > 0 ? "low" :
+    "empty";
+
+const variants: Record<LevelStatus, Variant> = {
+    maximum: {
+        label: "Nível máximo",
+        variant: "green",
+        icon: IconCheckCircle,
+    },
+    medium: {
+        label: "Nível médio",
+        variant: "primary",
+        icon: IconCheckCircle,
+    },
+    low: {
+        label: "Nível baixo",
+        variant: "yellow",
+        icon: IconAlertTriangle,
+    },
+    empty: {
+        label: "Caixa vazia",
+        variant: "red",
+        icon: IconXCircle,
+    },
+};
+
+const current = variants[status];
+---
+
+<Badge variant={current.variant}>
+    <span>
+        <current.icon class="size-7" />
+    </span>
+    <span class=" text-[16px] ">{current.label}</span>
+</Badge>

@@ -6,10 +6,13 @@ const variants = {
   red: "border-destructive/25 bg-destructive/10 text-destructive",
   yellow: "border-warning/25 bg-warning/10 text-warning",
   gray: "border-border bg-muted text-muted-foreground",
+  primary: "border-primary/25 bg-primary/10 text-primary"
 } as const;
 
+export type BadgeVariant = keyof typeof variants;
+
 export interface Props extends HTMLAttributes<"span"> {
-  variant?: keyof typeof variants;
+  variant?: BadgeVariant;
 }
 
 const { variant = "gray", class: className, ...rest } = Astro.props;
@@ -18,7 +21,7 @@ const { variant = "gray", class: className, ...rest } = Astro.props;
 <span
   data-slot="badge"
   class:list={[
-    "inline-flex w-fit shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-md border px-2 py-0.5 text-xs font-medium [&>svg]:size-3 [&>svg]:pointer-events-none",
+    "inline-flex w-fit shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-xs font-bold [&>svg]:size-3 [&>svg]:pointer-events-none",
     variants[variant],
     className,
   ]}
