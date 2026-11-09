@@ -1,0 +1,108 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+type Parts =
+  | "group"
+  | "separator"
+  | "content"
+  | "title"
+  | "description"
+  | "actions"
+  | "header"
+  | "footer";
+
+type Props = HTMLAttributes<"div"> &
+  (
+    | {
+        part?: "root";
+        variant?: "default" | "outline" | "muted";
+        size?: "default" | "sm";
+        as?: "div" | "a" | "li" | "section" | "article";
+        href?: string;
+      }
+    | { part: "media"; variant?: "default" | "icon" | "image" }
+    | { part: Parts }
+  );
+
+const root = cva(
+  "group/item flex items-center border border-transparent text-sm rounded-none transition-colors [a]:hover:bg-accent/50 [a]:transition-colors duration-100 flex-wrap outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+  {
+    variants: {
+      variant: {
+        default: "bg-transparent",
+        outline: "border-border bg-background",
+        muted: "bg-muted/50",
+      },
+      size: { default: "p-4 gap-4", sm: "py-3 px-4 gap-2.5" },
+    },
+    defaultVariants: { variant: "default", size: "default" },
+  },
+);
+
+const media = cva(
+  "flex shrink-0 items-center justify-center gap-2 group-has-[[data-slot=item-description]]/item:self-start [&_svg]:pointer-events-none group-has-[[data-slot=item-description]]/item:translate-y-0.5",
+  {
+    variants: {
+      variant: {
+        default: "bg-transparent",
+        icon: "size-8 border rounded-sm bg-muted [&_svg:not([class*='size-'])]:size-4",
+        image:
+          "size-10 rounded-sm overflow-hidden [&_img]:size-full [&_img]:object-cover",
+      },
+    },
+    defaultVariants: { variant: "default" },
+  },
+);
+
+const row = "flex basis-full items-center justify-between gap-2";
+
+const styles: Record<Parts, string> = {
+  group: "group/item-group flex flex-col",
+  separator: "bg-border shrink-0 h-px w-full my-0",
+  content: "flex flex-1 flex-col gap-1 [&+[data-slot=item-content]]:flex-none",
+  title: "flex w-fit items-center gap-2 text-sm leading-snug font-semibold",
+  description:
+    "text-muted-foreground line-clamp-2 text-balance text-sm leading-normal font-normal [&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+  actions: "flex items-center gap-2",
+  header: row,
+  footer: row,
+};
+
+const {
+  part = "root",
+  variant,
+  size,
+  as,
+  class: className,
+  ...rest
+} = Astro.props as Record<string, any>;
+
+const Tag = part === "root" ? (as ?? "div") : part === "description" ? "p" : "div";
+
+const classes =
+  part === "root"
+    ? root({ variant, size })
+    : part === "media"
+      ? media({ variant })
+      : styles[part as Parts];
+
+const extra =
+  part === "group"
+    ? { role: "list" }
+    : part === "separator"
+      ? { role: "none" }
+      : {};
+---
+
+<Tag
+  data-slot={part === "root" ? "item" : `item-${part}`}
+  data-variant={part === "root" || part === "media" ? (variant ?? "default") : undefined}
+  data-size={part === "root" ? (size ?? "default") : undefined}
+  class={cn(classes, className)}
+  {...extra}
+  {...rest}
+>
+  {part !== "separator" && <slot />}
+</Tag>
