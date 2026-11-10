@@ -1,0 +1,19 @@
+---
+import Card from "@/features/ui-components/card.astro";
+import Item from "@/features/ui-components/item.astro";
+import Cpu from '@/assets/cpu.svg'
+---
+
+<Card>
+    <Card part="header">
+        <Card part="title">Status do dispositivo</Card>
+    </Card>
+    <Card part="content">
+        <Item part="group">
+            <Item>
+                <Item part="media"><Cpu/></Item>
+                <Item part="title">Sensor ultrassônico</Item>
+            </Item>
+        </Item>
+    </Card>
+</Card>

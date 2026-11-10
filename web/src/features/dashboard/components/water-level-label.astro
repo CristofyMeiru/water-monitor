@@ -4,6 +4,7 @@ import IconCheckCircle from "@/assets/circle-check.svg";
 import IconAlertTriangle from "@/assets/alert-triangle.svg";
 import IconXCircle from "@/assets/circle-x.svg";
 import { type BadgeVariant } from "@/features/ui-components/badge.astro";
+import type { LevelStatus } from "@/types/water-level-data.types";
 
 interface Props {
     waterLevel: number;
@@ -15,7 +16,6 @@ interface Variant {
     icon: any;
 }
 
-type LevelStatus = "maximum" | "medium" | "low" | "empty";
 
 const { waterLevel } = Astro.props;
 

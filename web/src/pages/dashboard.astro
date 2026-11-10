@@ -4,17 +4,25 @@ import WaterLevel from "@/features/dashboard/components/water-level.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import WaterLevelLabel from "@/features/dashboard/components/water-level-label.astro";
 import DashboardInfoItems from "@/features/dashboard/components/dashboard-info-items.astro";
+import DashboardIotInfo from "@/features/dashboard/components/dashboard-iot-info.astro";
+import { getWaterLevelData } from '@/lib/api'
 
 let percentage: number = 90;
+
+const waterLevelData = await getWaterLevelData()
 
 ---
 
 <BaseLayout>
     <DashboardHeader/>
     <div class="flex flex-col justify-center items-center">
-        <WaterLevel waterLevel={percentage} />
-        <WaterLevelLabel waterLevel={percentage} />
+        <WaterLevel waterLevel={waterLevelData.percentage} />
+        <WaterLevelLabel waterLevel={waterLevelData.percentage} />
         <span class=" font-semibold text-muted-foreground ">Última atualização: 09:42 · 07/11/2025</span>
     </div>
-    <DashboardInfoItems/>
+    <div class="p-2 space-y-4">
+        <DashboardInfoItems/>
+        <DashboardIotInfo/>
+    </div>
+    
 </BaseLayout>
